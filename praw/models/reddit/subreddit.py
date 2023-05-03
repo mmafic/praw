@@ -959,7 +959,7 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
         # until we learn otherwise, assume this request always succeeds
         upload_response = self._reddit.post(url, data=img_data)
         upload_lease = upload_response["args"]
-        upload_url = f"https:{upload_lease['action']}"
+        upload_url = f"https:{upload_lease['action']}" if upload_lease['action'].startswith('//') else upload_lease['action']
         upload_data = {item["name"]: item["value"] for item in upload_lease["fields"]}
 
         response = self._read_and_post_media(media_path, upload_url, upload_data)
